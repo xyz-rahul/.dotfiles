@@ -71,6 +71,46 @@ return {
 			})
 		end,
 	},
+	-- top context bar
+	{
+		"SmiteshP/nvim-navic",
+		dependencies = { "neovim/nvim-lspconfig" },
+		config = function()
+			require("nvim-navic").setup({
+				icons = {
+					File = " ",
+					Module = " ",
+					Namespace = " ",
+					Package = " ",
+					Class = " ",
+					Method = " ",
+					Property = " ",
+					Field = " ",
+					Constructor = " ",
+					Enum = " ",
+					Interface = " ",
+					Function = " ",
+					Variable = " ",
+					Constant = " ",
+					String = " ",
+					Number = " ",
+					Boolean = " ",
+					Array = " ",
+					Object = " ",
+					Key = " ",
+					Null = " ",
+					EnumMember = " ",
+					Struct = " ",
+					Event = " ",
+					Operator = " ",
+					TypeParameter = " ",
+				},
+				highlight = true,
+			})
+            vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
+
+		end,
+	},
 
 	-- LSP
 	{
@@ -92,6 +132,10 @@ return {
 				-- see :help lsp-zero-keybindings
 				-- to learn the available actions
 				lsp_zero.default_keymaps({ buffer = bufnr })
+
+				if client.server_capabilities.documentSymbolProvider then
+					require("nvim-navic").attach(client, bufnr)
+				end
 
 				local keymap = vim.keymap -- for conciseness
 				keymap.set("n", "<leader>rs", ":LspRestart<CR>")
