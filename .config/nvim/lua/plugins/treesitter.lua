@@ -7,7 +7,17 @@ return {
 		build = ":TSUpdate",
 		opts = function()
 			local options = {
-				ensure_installed = { "lua", "javascript", "jsdoc", "typescript", "sql", "java", "comment","python" },
+				ensure_installed = {
+					"html",
+					"lua",
+					"javascript",
+					"jsdoc",
+					"typescript",
+					"sql",
+					"java",
+					"comment",
+					"python",
+				},
 
 				highlight = {
 					enable = true,
