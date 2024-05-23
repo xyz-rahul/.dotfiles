@@ -16,30 +16,43 @@ wezterm.on("toggle-opacity", function(window, pane)
 	window:set_config_overrides(overrides)
 end)
 
+local act = wezterm.action
+
 M.keys = {
 	{
 		key = "Enter",
 		mods = "CMD",
 		action = wezterm.action.ToggleFullScreen,
 	},
+	-- copy/paste --
+	{ key = "c", mods = "CTRL|SHIFT", action = act.CopyTo("Clipboard") },
+	{ key = "v", mods = "CTRL|SHIFT", action = act.PasteFrom("Clipboard") },
+
 	{
-		key = "o",
+		key = "O",
 		mods = "CMD",
 		action = wezterm.action.EmitEvent("toggle-opacity"),
 	},
 	{
-		key = "i",
+		key = "W",
 		mods = "CMD",
-		action = wezterm.action.InputSelector({
-			title = "Select Background",
-			choices = wallpaper:choices(),
-			fuzzy = true,
-			fuzzy_description = "Select Background: ",
-			action = wezterm.action_callback(function(window, _pane, idx)
-				---@diagnostic disable-next-line: param-type-mismatch
-				wallpaper:set_img(window, tonumber(idx))
-			end),
-		}),
+		action = wezterm.action_callback(function(window, _pane)
+			wallpaper:toggle(window)
+		end),
+	},
+	{
+		key = ",",
+		mods = "CMD",
+		action = wezterm.action_callback(function(window, _pane)
+			wallpaper:cycle_back(window)
+		end),
+	},
+	{
+		key = ".",
+		mods = "CMD",
+		action = wezterm.action_callback(function(window, _pane)
+			wallpaper:cycle_forward(window)
+		end),
 	},
 }
 

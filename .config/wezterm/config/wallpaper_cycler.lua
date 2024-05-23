@@ -1,6 +1,6 @@
 local wezterm = require("wezterm")
 local platform = require("config.platform")()
-local colors = require("colors.custom")
+local active_wallpaper = false
 
 -- Seeding random numbers before generating for use
 -- Known issue with lua math library
@@ -30,7 +30,6 @@ function BackDrops:init()
 	return backdrops
 end
 
-
 ---MUST BE RUN BEFORE ALL OTHER `BackDrops` functions
 ---Sets the `files` after instantiating `BackDrops`.
 ---
@@ -56,10 +55,10 @@ function BackDrops:_set_opt(window)
 				horizontal_align = "Center",
 			},
 			{
-				source = { Color = colors.background },
+				source = { Color = "black" },
 				height = "100%",
 				width = "100%",
-				opacity = 0.90,
+				opacity = 0.80,
 			},
 		},
 	}
@@ -128,6 +127,29 @@ function BackDrops:set_img(window, idx)
 	self.current_idx = idx
 	wezterm.GLOBAL.background = self.files[self.current_idx]
 	self:_set_opt(window)
+end
+
+function BackDrops:toggle(window)
+	local overrides = window:get_config_overrides() or {}
+	if active_wallpaper then
+		active_wallpaper = false
+		overrides.background = nil
+	else
+		active_wallpaper = true
+		overrides.background = {
+			{
+				source = { File = wezterm.GLOBAL.background },
+				horizontal_align = "Center",
+			},
+			{
+				source = { Color = "black" },
+				height = "100%",
+				width = "100%",
+				opacity = 0.80,
+			},
+		}
+	end
+	window:set_config_overrides(overrides)
 end
 
 return BackDrops:init()
