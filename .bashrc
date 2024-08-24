@@ -20,7 +20,6 @@ export EDITOR=nvim
 export VISUAL=nvim
 export GREP_OPTIONS='--color=always'
 alias v='nvim'
-alias db='nvim +DBUI'
 
 # Directory navigation aliases
 alias .="cd .."
