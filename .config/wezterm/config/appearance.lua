@@ -10,7 +10,7 @@ return {
 		{ family = "Terminus", weight = "Bold" },
 		"Noto Color Emoji",
 	}),
-	color_scheme = "Seti UI (base16)",
+    color_scheme = 'midnight-in-mojave',
 
 	-- in mac left opt produce alt by default
 	-- https://wezfurlong.org/wezterm/config/keyboard-concepts.html#macos-left-and-right-option-key
