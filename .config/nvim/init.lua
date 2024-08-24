@@ -1,68 +1,54 @@
+-- Make sure to setup `mapleader` and `maplocalleader` before
+-- loading lazy.nvim so that mappings are correct.
+-- This is also a good place to setup other settings (vim.opt)
+vim.g.mapleader = " "
+vim.g.maplocalleader = "  "
+
 -- ordinary Neovim
 require("keymap")
 require("vim-options")
 
+-- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-	vim.fn.system({
-		"git",
-		"clone",
-		"--filter=blob:none",
-		"https://github.com/folke/lazy.nvim.git",
-		"--branch=stable", -- latest stable release
-		lazypath,
-	})
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+	local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+	if vim.v.shell_error ~= 0 then
+		vim.api.nvim_echo({
+			{ "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+			{ out, "WarningMsg" },
+			{ "\nPress any key to exit..." },
+		}, true, {})
+		vim.fn.getchar()
+		os.exit(1)
+	end
 end
+
 vim.opt.rtp:prepend(lazypath)
-require("lazy").setup("plugins")
 
 if vim.g.vscode then
-	-- VSCode extension
-	vim.g.mapleader = " "
-	local vscode = require("vscode")
+	-- Setup lazy.nvim
+	require("lazy").setup({
+		spec = {
+			-- import your plugins
+			{ import = "common_plugins" },
+		},
+		-- Configure any other settings here. See the documentation for more details.
+		-- automatically check for plugin updates
+		checker = { enabled = false },
+	})
 
-	vim.keymap.set({ "n", "x" }, "<leader>r", function()
-		vscode.with_insert(function()
-			vscode.action("editor.action.refactor")
-		end)
-	end)
-
-	vim.keymap.set({ "n" }, "<leader>fm", function()
-		vscode.action("editor.action.formatDocument")
-	end)
-
-	vim.keymap.set({ "x" }, "<leader>fm", function()
-		vscode.action("editor.action.formatSelection")
-	end)
-
-	vim.keymap.set({ "n" }, "<leader>ff", function()
-		vscode.action("workbench.action.quickOpen")
-	end)
-	vim.keymap.set({ "n" }, "<leader>lg", function()
-		vscode.action("workbench.action.findInFiles")
-	end)
-
-	vim.keymap.set({ "n", "x" }, "<leader>x", function()
-		vscode.action("workbench.action.closeActiveEditor")
-	end)
-
-	vim.keymap.set({ "n" }, "<leader>dd", function()
-		vscode.action("workbench.actions.view.problems")
-	end)
-
-	vim.keymap.set({ "n", "v" }, "zc", function()
-		vscode.action("editor.fold")
-	end)
-	vim.keymap.set({ "n", "v" }, "zC", function()
-		vscode.action("editor.foldRecursively")
-	end)
-	vim.keymap.set({ "n", "v" }, "zo", function()
-		vscode.action("editor.unfold")
-	end)
-	vim.keymap.set({ "n", "v" }, "zO", function()
-		vscode.action("editor.unfoldRecursively")
-	end)
-	vim.keymap.set({ "n", "v" }, "za", function()
-		vscode.action("editor.toggleFold")
-	end)
+	require("vscode_neovim")
+else
+	-- Setup lazy.nvim
+	require("lazy").setup({
+		spec = {
+			-- import your plugins
+			{ import = "plugins" },
+			{ import = "common_plugins" },
+		},
+		-- Configure any other settings here. See the documentation for more details.
+		-- automatically check for plugin updates
+		checker = { enabled = false },
+	})
 end
