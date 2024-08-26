@@ -27,8 +27,8 @@ return {
 				code_actions = "<leader>ca",
 				fold = "zc",
 				unfold = "zo",
-				fold_all = "zC",
-				unfold_all = "zA",
+				fold_all = "zM",
+				unfold_all = "zR",
 			},
 		}
 		require("symbols-outline").setup(opts)
