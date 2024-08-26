@@ -103,7 +103,7 @@ return {
 				keymap.set("n", "gr", vim.lsp.buf.references)
 				keymap.set("n", "<leader>rn", vim.lsp.buf.rename)
 				keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action)
-				keymap.set("n", "<leader>d", vim.diagnostic.open_float)
+				keymap.set("n", "<leader>dd", vim.diagnostic.open_float)
 				keymap.set("n", "<space>dl", vim.diagnostic.setloclist)
 				keymap.set("n", "[d", vim.diagnostic.goto_prev)
 				keymap.set("n", "]d", vim.diagnostic.goto_next)
