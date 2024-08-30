@@ -1,7 +1,7 @@
 local wezterm = require("wezterm")
 local mytable = require("mystdlib").mytable
 
-local wallpapers_list = wezterm.glob(wezterm.home_dir .. "/.config/wezterm/waifu/*")
+local wallpapers_list = wezterm.glob(wezterm.home_dir .. "/waifu/*")
 local Wallpaper = require("wallpaper"):init(wallpapers_list)
 
 local config = wezterm.config_builder()
@@ -23,7 +23,7 @@ wezterm.on("toggle-opacity", function(window, pane)
 end)
 
 ----------------- CONFIG ----------------
-config.debug_key_events = true
+-- config.debug_key_events = true
 
 config.keys = {
 	{
