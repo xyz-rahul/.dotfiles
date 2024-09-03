@@ -1,12 +1,17 @@
--- Make sure to setup `mapleader` and `maplocalleader` before
--- loading lazy.nvim so that mappings are correct.
--- This is also a good place to setup other settings (vim.opt)
-vim.g.mapleader = " "
-vim.g.maplocalleader = "  "
+vim.cmd [[source ~/.vimrc]]
 
--- ordinary Neovim
-require("keymap")
-require("vim-options")
+vim.opt.undodir = vim.fn.expand("$HOME") .. "/.nvim/undodir"
+
+-- show error only in floating box
+vim.diagnostic.config({
+	underline = true,
+	severity_sort = true,
+	virtual_text = false,
+	float = {
+		source = "always", -- Or "if_many"
+	},
+})
+vim.keymap.set("n", "<C-e>", ":Oil<CR>", { desc = "open oil file explorer" })
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"

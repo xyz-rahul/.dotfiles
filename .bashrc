@@ -40,7 +40,7 @@ _source_if() { [[ -r "$1" ]] && source "$1"; }
 
 _tmux() {
   if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-    exec tmux a || tmux
+      exec $(tmux a || tmux)
   fi
 }
 
