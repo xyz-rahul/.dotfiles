@@ -1,0 +1,48 @@
+source ~/.vimrc
+
+"enable nerdtree
+set NERDTree
+map <C-e> :NERDTreeToggle<CR>
+
+" Code formatting and navigation
+map <leader>fm :action ReformatCode<CR>
+map <leader>ff :action GotoFile<CR>
+map <leader>lg :action FindInPath<CR>
+
+" Reference Search
+map gr :action FindUsages<CR>
+map gD :action GotoDeclaration<CR>
+nnoremap gi :action GotoImplementation<CR>
+
+" set commentary
+map gcc :action CommentByLineComment<CR>
+map gbc :action CommentByBlockComment<CR>
+
+" View Problems
+map <leader>dd :action ShowErrorsInProject<CR>
+" View Problems and Focus Editor
+map <leader>dl :action ShowErrorsInProject<CR>
+
+" Quick Fix
+map <leader>ca :action ShowIntentionActions<CR>
+
+"Marker
+map ]d :action GotoNextError<CR>
+map [d :action GotoPreviousError<CR>
+
+" Fold
+map zc :action CollapseRegion<CR>
+nnoremap zC :action CollapseRegionRecursively<CR>
+" Unfold
+map zo :action ExpandRegion<CR>
+nnoremap zO :action ExpandRegionRecursively<CR>
+
+
+" Terminal
+nmap <leader>t :action ActivateTerminalToolWindow<CR>
+
+" Git
+nmap <leader>gB :action Git.Branches<CR>
+nmap <leader>G :action Git.Menu<CR>
+
+
