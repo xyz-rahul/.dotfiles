@@ -26,6 +26,7 @@ fi
 
 # Prompt for the query
 read -p "Enter Query: " query
+query=`echo $query | tr ' ' '+'`
 
 # Fetch the cheat sheet for the selected item and query, then open in less
 echo \"curl cht.sh/$selected/$query/\" & curl cht.sh/$selected/$query & while [ : ]; do sleep 1; done
