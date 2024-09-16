@@ -5,7 +5,7 @@ search_dirs=(~/.dotfiles ~/dev ~/notes)
 
 # Check if fd is available
 if command -v fd &> /dev/null; then
-    files=$(fd . "${search_dirs[@]}" --type f --hidden --follow --exclude .git && fd . $HOME -d 1 --type f --hidden --exclude .git)
+    files=$(fd . ${search_dirs[@]} --type f --hidden --follow --ignore-case --no-ignore && fd . $HOME -d 1 --type f --hidden --ignore-case)
 # Check if find is available
 elif command -v find &> /dev/null; then
     files=$(find "${search_dirs[@]}" -type f -name '.*' -prune -o -type f -print && find $HOME -maxdepth 1 -type f -name '.*' -prune -o -type f -print)
