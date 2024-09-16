@@ -7,11 +7,14 @@ esac
 # ---------------------- start up code ---------------------
 eval "$(fzf --bash)"
 
+if command -v nvim &> /dev/null; then
+    export EDITOR=nvim
+    export VISUAL=nvim
+    alias v='nvim'
+fi
+
 # Editor and grep settings
-export EDITOR=nvim
-export VISUAL=nvim
 export GREP_OPTIONS='--color=always'
-alias v='nvim'
 
 # Directory navigation aliases
 alias .="cd .."
