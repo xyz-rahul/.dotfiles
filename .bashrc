@@ -119,3 +119,62 @@ export LESS_TERMCAP_se=""      # "0m"
 export LESS_TERMCAP_so="[34m" # blue
 export LESS_TERMCAP_ue=""      # "0m"
 export LESS_TERMCAP_us="[4m"  # underline
+
+# -------------------- git alias -------------------
+alias ga='git add --verbose'
+alias gaa='git add --all --verbose'
+alias gap='git add --patch --verbose'
+alias gaap='git add --all --patch --verbose'
+alias gau='git add --update'
+
+alias gd='git diff'
+alias gds='git diff --staged'
+
+alias gs='git status'
+alias gss='git status --short'
+alias gsb='git status  --branch'
+alias gssb='git status --short --branch'
+
+alias gsw='git switch'
+
+alias gc='git commit'
+alias gca='git commit --amend'
+
+alias gr='git rebase --interactive'
+alias grc='git rebase --continue'
+alias gra='git rebase --abort'
+alias grs='git rebase --skip'
+
+alias gR='git restore'
+alias gRs='git restore --staged'
+
+alias gb='git branch'
+alias gba='git branch --all'
+alias gbd='git branch --delete'
+alias gbm='git branch --merged'
+alias gbnm='git branch --no-merged'
+
+alias gf='git fetch'
+alias gfo='git fetch origin'
+alias gfu='git fetch upstream'
+
+alias gp='git push'
+alias gpo='git push origin'
+
+alias gm='git merge'
+alias gma='git merge --abort'
+alias gmc='git merge --continue'
+alias gms='git merge --squash'
+
+alias gSs='git stash save'
+alias gSp='git stash push'
+alias gSpa='git stash push --all'
+alias gSP='git stash pop'
+alias gSa='git stash apply'
+alias gSd='git stash drop'
+alias gSc='git stash clear'
+alias gSl='git stash list'
+
+alias gl="git log --graph --pretty=format:'%C(auto)%h%Creset - %C(auto)%d%Creset %C(auto)%s%Creset %C(bold green)(%cr)%Creset %C(italic 244)<%an>%Creset' --abbrev-commit "
+alias gla="git log --graph --pretty=format:'%C(auto)%h%Creset - %C(auto)%d%Creset %C(auto)%s%Creset %C(bold green)(%cr)%Creset %C(italic 244)<%an>%Creset' --abbrev-commit --all"
+
