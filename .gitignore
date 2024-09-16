@@ -1,4 +1,23 @@
-.DS_Store
-.config/tmux/plugins/*
-.config/nvim/lazy-lock.json
-.config/wezterm/waifu/*
+# .gitignore
+
+/*
+!.bash_profile
+!.bashrc
+!.dircolors
+!.gitignore
+!.ideavimrc
+!.vimrc
+!/notes
+!/scripts
+!/notes
+
+.config/**
+
+!.config/nvim/lua/
+!.config/nvim/init.lua
+
+!.config/skhd/
+!.config/wezterm/
+!.config/tmux/tmux.conf
+!.config/karabiner/karabiner.json
+
