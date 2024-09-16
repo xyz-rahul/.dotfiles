@@ -94,10 +94,23 @@ shopt -s extglob
 
 # --------------------------- smart prompt ---------------------------
 #                 (keeping in bashrc for portability
-parse_git_branch() {
-    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ [\1]/'
+git_prompt ()
+{
+  # Is this a git directory?
+  if ! git rev-parse --git-dir > /dev/null 2>&1; then
+    return 0
+  fi
+  # Grab working branch name
+  git_branch=$(git branch 2>/dev/null| sed -n '/^\*/s/^\* //p')
+  # Clean or dirty branch
+  if git diff --quiet 2>/dev/null >&2; then
+    git_color="${git_clean_color}"
+  else
+    git_color="${git_dirty_color}"
+  fi
+  echo " [$git_color$git_branch${reset_color}]"
 }
-PS1="\[\033[38;5;35m\][\u\[\033[38;5;35m\]] [\[\033[38;5;33m\]\j\[\033[38;5;35m\]] [\h:\[$(tput sgr0)\]\[\033[38;5;33m\]\w\[\033[38;5;35m\]]\[$(tput setaf 3)\]\$(parse_git_branch) \n\\[\033[38;5;35m\]$ \[$(tput sgr0)\]"
+PS1="\[\033[38;5;35m\][\u\[\033[38;5;35m\]] [\[\033[38;5;33m\]\j\[\033[38;5;35m\]] [\h:\[$(tput sgr0)\]\[\033[38;5;33m\]\w\[\033[38;5;35m\]]\[$(tput setaf 3)\]\$(git_prompt) \n\\[\033[38;5;35m\]$ \[$(tput sgr0)\]"
 
 # ----------------------------- dircolors ----------------------------
 if _have dircolors; then
@@ -121,6 +134,8 @@ export LESS_TERMCAP_ue=""      # "0m"
 export LESS_TERMCAP_us="[4m"  # underline
 
 # -------------------- git alias -------------------
+alias g='git '
+
 alias ga='git add --verbose'
 alias gaa='git add --all --verbose'
 alias gap='git add --patch --verbose'
