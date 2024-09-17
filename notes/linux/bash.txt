@@ -1,0 +1,299 @@
+ASH REFERENCE MANUAL
+-------------------------------------------------------------------------------
+https://tiswww.case.edu/php/chet/bash/bashref.html
+-------------------------------------------------------------------------------
+
+WHERE TO PUT CUSTOM SCRIPTS
+-------------------------------------------------------------------------------
+It depends on who will use your script:
+
+Only you - $HOME/.local/bin (As per the XDG Base Directory Specification [https://specifications.freedesktop.org/basedir-spec/latest/])
+You and other local users - /usr/local/bin
+root only - /usr/local/sbin
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+
+-------------------------------------------------------------------------------
+FILESYSTEM HIERARCHY STANDARD
+https://refspecs.linuxfoundation.org/FHS_3.0/index.html
+-------------------------------------------------------------------------------
+
+
+VARIABLE
+---------------------------------------------------------------------------
+    myvar=<val>
+    $myvar to use
+
+    variable are tied to session
+
+HOW QUOTES WORK " '
+------------------------------------------------------------------------------
+    echo "$SHELL" 
+        output: /bin/bash
+    echo '$SHELL' 
+        output: $SHELL
+
+    variables does not expand in single quote
+
+SUBSHELL SUBQUERIES
+---------------------------------------------------------------------
+    $(ls -l)
+
+
+
+
+MODES
+---------------------------------------------------------------------------
+change mode to executable
+chmod +x script.sh
+
+
+IF STATEMENT
+-------------------------------------------------------------------------------
+    NOTE: put space after [
+
+    if [ $myvar -eq 200 ] 
+    then 
+        echo 'hello'
+    fi
+
+    if [ ! $myvar -eq 200 ] 
+    then 
+        echo 'hello'
+    fi
+
+CASE
+-------------------------------------------------------------------------------
+    read n;
+
+    case $n in
+        1) echo "n is: $n";;
+        2) echo "n is: $n";;
+        3) echo "n is: $n";;
+        4) echo "n is: $n";;
+        5) echo "n is: $n";;
+        *) echo "n is not in range 1..5"
+    esac
+
+    NOTE: ;; are important, but necessary for last option
+
+
+WHILE FOR LOOP
+-------------------------------------------------------------------------------
+    while [ $myvar -eq 200 ] 
+    do
+        echo 'hello'
+    done
+
+
+    for n in 1 2 3 4 5
+    do
+        echo $n
+    done
+
+
+    for n in {1..9}        #sequence expression
+    do
+        echo $n
+    done
+
+
+    for file in ~/dev/*
+    do
+        echo "file name in dev: $file"
+    done
+
+ARRAYS
+------------------------------------------------------------------------------
+    arr=(one two three four)
+    echo ${arr[@]}
+    echo ${arr[0]} # to print 0-index
+
+    for item in @{arr[@]};
+    do
+        echo $item
+    done
+
+TEST COMMAND
+------------------------------------------------------------------------------
+    1. File Test Operators:
+        -e <file>      True if the file exists.
+        -f <file>      True if the file is a regular file.
+        -d <file>      True if the file is a directory.
+        -r <file>      True if the file is readable.
+        -w <file>      True if the file is writable.
+        -x <file>      True if the file is executable.
+        -s <file>      True if the file is not empty.
+        -L <file>      True if the file is a symbolic link.
+
+    2. String Test Operators:
+        -z <string>      True if the string is empty.
+        -n <string>      True if the string is not empty.
+        <string1> = <string2>      True if the strings are equal.
+        <string1> != <string2>     True if the strings are not equal.
+
+    3. Numeric Test Operators:
+        <number1> -eq <number2>      True if the numbers are equal.
+        <number1> -ne <number2>      True if the numbers are not equal.
+        <number1> -gt <number2>      True if the first number is greater than the second.
+        <number1> -lt <number2>      True if the first number is less than the second.
+        <number1> -ge <number2>      True if the first number is greater than or equal to the second.
+        <number1> -le <number2>      True if the first number is less than or equal to the second.
+
+    4. Logical Operators:
+        ! <condition>                   True if the condition is false (logical NOT).
+        <condition1> -a <condition2>    True if both conditions are true (logical AND).
+        <condition1> -o <condition2>    True if at least one of the conditions is true (logical OR).
+
+    5. Example Usage:
+        if [ -f ~/myfile ]; then
+            echo 'file exists'
+        fi
+
+        if [ -d /path/to/dir ]; then
+            echo 'directory exists'
+        fi
+
+        if [ -n "$var" ]; then
+            echo 'variable is not empty'
+        fi
+
+        if [ "$num1" -gt "$num2" ]; then
+            echo 'num1 is greater than num2'
+        fi
+
+    6. Check Command Availability:
+        command -v <command>
+
+    7. Checking Command Success:
+        if command -v <command> >/dev/null 2>&1; then
+            echo '<command> is available'
+        else
+            echo '<command> is not available'
+        fi
+
+EXIT CODE
+-------------------------------------------------------------------------------
+    $? exit code of last executed command
+
+    Exit code	Description             	Examples
+    0	        Successful                  execution	
+    1	        Catch generic errors	    “Divide by zero”, “missing operand”, “Permission denied”
+    2	        Improper command usage	    “Missing keyword”, “No such file or directory”
+
+
+    usage: exit 0
+
+
+
+IO REDIRECTION
+-------------------------------------------------------------------------------
+    https://tldp.org/LDP/abs/html/io-redirection.html
+    https://catonmat.net/bash-one-liners-explained-part-three
+
+    0<      STDIN  (by default, <)
+
+    1>      STDOUT (by default, > )
+    2>      STDERR
+
+    &>      both STDOUT STDERR
+
+    1>filename   # Redirect stdout to file "filename."
+    2>filename   # Redirect stderr to file "filename."
+    &>filename   # Redirect both stdout and stderr to file "filename."
+
+    # Single-line redirection commands affect only the line they are on
+
+
+    ******************************************************************************
+    M>&N
+        # "M" is a file descriptor, which defaults to 1, if not set.
+        # "N" is another file descriptor.
+
+    2>&1
+        # Redirects stderr to stdout.
+        # Error messages get sent to same place as standard output.
+        >>filename 2>&1
+            bad_command >>filename 2>&1
+            # Appends both stdout and stderr to the file "filename" ...
+
+    NOTE:
+        At first, 2>1 may look like a good way to redirect stderr to stdout. However,
+        it will actually be interpreted as "redirect stderr to a file named 1".
+
+        & indicates that what follows and precedes is a file descriptor, and not a filename. 
+        Thus, we use 2>&1. Consider >& to be a redirect merger operator.
+    ******************************************************************************
+
+
+    >> APPEND
+        1>>filename # append stdout to file "filename."
+        2>>filename # append stderr to file "filename."
+
+
+
+    NOCLOBBER OPTION >| 
+    ------------------------------------------------------------------------------
+    While set -o noclobber instruct bash to not overwrite any existing file, 
+    the >| syntax let you pass through this limitation:
+
+
+
+
+    TO STDIN 
+    -------------------------------------------------------------------------------
+    https://tldp.org/LDP/abs/html/io-redirection.html
+
+    0<      STDIN  (by default, <)
+
+    # Accept input from a file.
+    0< FILENAME
+    < FILENAME
+
+    [j]<>filename
+        #  Open file "filename" for reading and writing
+
+    eg:
+        read -r line < file
+        read myname 
+
+    TO THROW CUSTOM ERROR
+    -------------------------------------------------------------------------------
+    echo 'hello world'                  # by default goes to &1 file descriptor
+    echo "An error occurred" >&2        
+    exit 1
+
+    eg:
+        my_script.sh 1> /dev/null
+        output:  An error occurred 
+
+        my_script.sh 2> /dev/null
+        output:  hello world 
+
+
+FUNCTION
+-------------------------------------------------------------------------------
+
+    my_function(){
+        # condition
+        echo 'my_function is executed'
+    }
+
+    my_function
+
+
+ARGUMENTS
+-------------------------------------------------------------------------------
+    <filename> <argument>
+    /usr/bin/ls  -l
+
+    $1 first args
+    $2 second args
+    ...
+
+    $* all args
+
+    $# number of args

@@ -1,0 +1,52 @@
+ssh-keygen
+    create private public keys  
+
+(by default)
+~/.ssh/id_rsa                       private key
+~/.ssh/id_rsa.pub                   public key
+
+or 
+~/.ssh/id_ed25519                   private key
+~/.ssh/id_ed25519.pub               public key
+
+
+~/.ssh/known_hosts 
+    keeps record of known hosts so ssh can login automatically
+
+
+to login 
+        ssh  user@ip                 (by default)
+        ssh -i <path-key> user@ip    (mention path to key)
+
+
+
+ssh-add – adds private key identities to the OpenSSH authentication agent
+    adding key in ssh cache
+    in case of different keys
+
+    ssh-add <path-to-key>
+
+
+to save ssh config
+
+~/.ssh/config (user created)
+--------------------------------
+Host myserver
+    Hostname        127.105.7.26
+    Port            22
+    User            root
+    IdentityFile    ~/.ssh/id_rsa
+
+
+ssh myserver
+
+
+
+
+onto server 
+append id_rsa.pub (public key) ~/.ssh/authorized_keys
+
+
+references
+-------------------------------------------------------------------------------
+https://www.youtube.com/watch?v=YS5Zh7KExvE

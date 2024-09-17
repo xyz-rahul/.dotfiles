@@ -1,0 +1,67 @@
+FILE DIR PERMISSION linux
+-------------------------------------------------------------------------------
+ls -l 
+output: 
+        -rwxr-xr-x  1 rahulkumar  staff  93   Sep 18 00:16 myscript.sh
+                      user        group  size
+-  rwx r-x r-x
+G1 G2  G3  G4 
+
+|d|rwxr-xr-x
+the first section (G1): is it a file? dir? link?
+
+-|rwx|r-xr-x
+the second section (G2): permision for user 
+
+-rwx|r-x|r-x
+the third section (G3): permision for group 
+
+-rwxr-x|r-x|
+the fourth section (G4): permision for 'other' (everybody else, niether user nor group)
+
+r read
+w write
+x if file -> executable
+  if dir  -> allowed access
+
+u user
+g group
+o other
+
+TO CHANGE MODE
+------------------------------------------------------------------------------
+chmod  +x   myscript.sh    #  add     x
+chmod  u-x  myscript.sh    #  remove  x  for  user
+chmod  g-x  myscript.sh    #  remove  x  for  group
+chmod  o-x  myscript.sh    #  remove  x  for  other
+
+
+chmod og-rwx myscript.sh   # remove rwx for group other
+
+
+CHANGE MODE NUMBERS
+------------------------------------------------------------------------------
+r=4 w=2 x=1
+
+chmod ???   filename
+chmod <ugo> filename # for user group other
+
+chmod 750 myscript
+
+#	Permission	                rwx     
+0	none	                    000  0   
+1	execute only	            001  1   
+2	write only	                010  2  
+3	write and execute	        011  2+1  
+4	read only	                100  4   
+5	read and execute	        101  4+1   
+6	read and write	            110  4+2
+7	read, write, and execute	111  4+2+1
+
+
+change owner
+------------------------------------------------------------------------------
+# need sudo access
+sudo chown <owner>:<group>        <dir>
+sudo chown batman:justice-league  Downloads/
+sudo chown <owner>:               <dir>       #no  group  with  :  default  to  current  group
