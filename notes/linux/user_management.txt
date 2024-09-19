@@ -1,0 +1,96 @@
+User Management in Linux
+-------------------------------------------------------------------------------
+
+User Creation
+    useradd <username> - Add a User:
+    https://man7.org/linux/man-pages/man8/useradd.8.html
+
+        -m    - Create home directory.
+        -d    - Specify home directory.
+        -g    - Specify primary group.
+        -s    - Specify login shell.
+        -c    - User ID info (description).
+
+    useradd -m -d /home/<username> -g <groupname> -s /bin/bash -c "description" <username>
+
+User Information
+    id <username>    - Display User Info
+
+    eg-
+    root@159f6f1fb84f:/home# id makami
+    uid=1001(makami) gid=1001(makami) groups=1001(makami)
+
+User Deletion
+    userdel <username>    - Delete a User:
+
+        -r    - Remove the user's home directory.
+        -f    - Force deletion even if the user is logged in.
+
+Note: Always back up files before deleting user files.
+
+Modify User Details
+https://man7.org/linux/man-pages/man8/usermod.8.html
+
+    usermod <options> <username>   - Modify User:
+
+        -G <group-name>      Add user to a new group (primary group remains the same).
+        -g <group-name>      Change the default group.
+        -L <username>        Lock user account.
+        -U <username>        Unlock user account.
+
+note: every user has a primary group and few secondry group(s)
+
+Password Management
+    passwd                  - Change Current User Password:
+    passwd <username>       - Change Another User's Password:
+
+User Login
+    su - <username>    - Login as User:
+
+
+Group Management
+    Group Creation and Deletion
+        groupadd <group-name>     - Create a Group:
+        groupdel <group-name>     - Delete a Group:
+
+    Modify User Groups
+        usermod -aG <group-name> <username> - Add User to a Group:
+        usermod -rG <group-name> <username> - Remove User from a Group:
+
+System Files
+    /etc/default/useradd: Sets defaults for useradd (may vary by distribution).
+    /etc/group: Contains group details.
+    /etc/passwd file tracks every registered user with access to the system.
+
+        FORMAT OF /etc/passwd
+        <user>:<password>:<UID>:<GID>:<User Info (GECOS)>:<Home Directory>:<Shell>
+        - x: Indicates an encrypted (hashed) password.
+
+        eg -    root:x:0:0:root:/root:/bin/bash
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
