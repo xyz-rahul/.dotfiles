@@ -1,8 +1,0 @@
-#run skhd --restart-service
-
-cmd - 3: open -a /Applications/Google\ Chrome.app
-cmd - 2: open -a /Applications/WezTerm.app
-cmd - 0: open -a /System/Applications/Mail.app
-
-
-
