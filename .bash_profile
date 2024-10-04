@@ -14,6 +14,9 @@ else
     echo "Directory $script_dir does not exist."
 fi
 
+script_dir="$HOME/.local/bin"
+export PATH="$PATH:$script_dir"
+chmod +x $script_dir/*
 
 
 if [ -f "$HOME/.bashrc" ]; then
