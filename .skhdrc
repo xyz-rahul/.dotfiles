@@ -1,0 +1,64 @@
+# if desktop is not switched on application focus run:
+# defaults write com.apple.dock workspaces-auto-swoosh -bool YES
+# killall Dock
+
+# ===== Yabai Keybindings Configuration =============================
+
+# --- Changing Window Focus ---
+# Move focus between windows within the same space
+cmd - j : yabai -m window --focus south
+cmd - k : yabai -m window --focus north
+cmd - h : yabai -m window --focus west
+cmd - l : yabai -m window --focus east
+
+# Swap windows in the specified direction
+shift + cmd - j : yabai -m window --swap south
+shift + cmd - k : yabai -m window --swap north
+shift + cmd - h : yabai -m window --swap west
+shift + cmd - l : yabai -m window --swap east
+
+# --- Modifying the Layout ---
+# Rotate the layout clockwise
+shift + cmd - r : yabai -m space --rotate 270
+
+# Flip layout along the specified axes
+shift + cmd - y : yabai -m space --mirror y-axis
+shift + cmd - x : yabai -m space --mirror x-axis
+
+# Toggle window floating state
+# shift + cmd - t : yabai -m window --toggle float
+
+# --- Modifying Window Size ---
+# Resize windows (maximizing and moving)
+# Toggle fullscreen zoom for the active window (currently commented out due to errors)
+# shift + cmd - f : yabai -m window --toggle zoom-fullscreen
+
+# Move the focused window to a specified space
+shift + alt - 1 : yabai -m window --space 1
+shift + alt - 2 : yabai -m window --space 2
+shift + alt - 3 : yabai -m window --space 3
+shift + alt - 4 : yabai -m window --space 4
+shift + alt - 5 : yabai -m window --space 5
+shift + alt - 6 : yabai -m window --space 6
+shift + alt - 7 : yabai -m window --space 7
+shift + alt - 8 : yabai -m window --space 8
+shift + alt - 9 : yabai -m window --space 9
+shift + alt - 0 : yabai -m window --space 10
+
+# Resize windows using Ctrl and arrow keys
+lctrl + cmd - h : yabai -m window --resize left:-50:0; \
+                  yabai -m window --resize right:-50:0
+lctrl + cmd - j : yabai -m window --resize bottom:0:50; \
+                  yabai -m window --resize top:0:50
+lctrl + cmd - k : yabai -m window --resize top:0:-50; \
+                  yabai -m window --resize bottom:0:-50
+lctrl + cmd - l : yabai -m window --resize right:50:0; \
+                  yabai -m window --resize left:50:0
+
+# Float/Unfloat a window and toggle its border
+shift + cmd - space : \
+    yabai -m window --toggle float; \
+    yabai -m window --toggle border
+
+# ===== End of Keybindings ========================================
+
