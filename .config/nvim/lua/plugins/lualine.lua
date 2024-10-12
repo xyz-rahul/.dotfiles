@@ -100,6 +100,7 @@ return {
 
 		ins_left({
 			"filename",
+            path = 3,
 			cond = conditions.buffer_not_empty,
 			color = { fg = colors.magenta, gui = "bold" },
 		})
@@ -141,6 +142,7 @@ return {
 			"filesize",
 			cond = conditions.buffer_not_empty,
 		})
+		ins_right({ "location", color = { fg = colors.fg, gui = "bold" } })
 		ins_right({ "progress", color = { fg = colors.fg, gui = "bold" } })
 		ins_right({
 			"o:encoding", -- option component same as &encoding in viml
