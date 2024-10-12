@@ -1,4 +1,4 @@
-vim.cmd [[source ~/.vimrc]]
+vim.cmd([[source ~/.vimrc]])
 
 vim.opt.undodir = vim.fn.expand("$HOME") .. "/.nvim/undodir"
 
@@ -27,7 +27,6 @@ keymap.set("n", "<space>dl", vim.diagnostic.setloclist)
 keymap.set("n", "[d", vim.diagnostic.goto_prev)
 keymap.set("n", "]d", vim.diagnostic.goto_next)
 
-
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -46,29 +45,22 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
-if vim.g.vscode then
-	-- Setup lazy.nvim
-	require("lazy").setup({
-		spec = {
-			-- import your plugins
-			{ import = "common_plugins" },
-		},
-		-- Configure any other settings here. See the documentation for more details.
-		-- automatically check for plugin updates
-		checker = { enabled = false },
-	})
+local spec = {
+	{ import = "common_plugins" },
+}
 
+-- If running in VSCode, add additional configuration or plugins
+if vim.g.vscode then
 	require("vscode_neovim")
 else
-	-- Setup lazy.nvim
-	require("lazy").setup({
-		spec = {
-			-- import your plugins
-			{ import = "plugins" },
-			{ import = "common_plugins" },
-		},
-		-- Configure any other settings here. See the documentation for more details.
-		-- automatically check for plugin updates
-		checker = { enabled = false },
-	})
+	-- For non-VSCode setups, include other plugins
+	table.insert(spec, { import = "plugins" })
 end
+
+-- Setup lazy.nvim
+require("lazy").setup({
+	spec = spec,
+	install = { colorscheme = { "habamax" } },
+
+	checker = { enabled = false },
+})
