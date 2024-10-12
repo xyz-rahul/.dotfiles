@@ -11,7 +11,7 @@ vim.diagnostic.config({
 		source = "always", -- Or "if_many"
 	},
 })
-vim.keymap.set("n", "<C-e>", ":Oil<CR>", { desc = "open oil file explorer" })
+vim.keymap.set("n", "<C-e>", ":Explore<CR>", { desc = "open oil file explorer" })
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
