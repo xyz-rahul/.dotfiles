@@ -167,6 +167,4 @@ nnoremap <Esc> :noh<CR>
 " Normal mode: Close buffer
 nnoremap <leader>x :bd<CR>
 
-nmap <leader>t <Action>(ActivateTerminalToolWindow)
-
 
