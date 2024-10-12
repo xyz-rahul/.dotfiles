@@ -9,9 +9,15 @@ map <leader>fm :action ReformatCode<CR>
 map <leader>ff :action GotoFile<CR>
 map <leader>lg :action FindInPath<CR>
 
+
+nmap <leader>ca :action Generate<CR>
+
 " Reference Search
 map gr :action FindUsages<CR>
 map gD :action GotoDeclaration<CR>
+
+"QuickDefinition legacy stuff
+map gd :action QuickImplementations<CR>
 nnoremap gi :action GotoImplementation<CR>
 
 " set commentary
@@ -24,7 +30,7 @@ map <leader>dd :action ShowErrorsInProject<CR>
 map <leader>dl :action ShowErrorsInProject<CR>
 
 " Quick Fix
-map <leader>ca :action ShowIntentionActions<CR>
+map <leader>F :action ShowIntentionActions<CR>
 
 "Marker
 map ]d :action GotoNextError<CR>
@@ -45,4 +51,14 @@ nmap <leader>t :action ActivateTerminalToolWindow<CR>
 nmap <leader>gB :action Git.Branches<CR>
 nmap <leader>G :action Git.Menu<CR>
 
+nmap <leader>h :action ShowHarpoon<CR>
+nmap <leader>a :action AddToHarpoon<CR>
+
+
+nmap <leader>1 :action GotoHarpoon1<cr>
+nmap <leader>2 :action GotoHarpoon2<cr>
+nmap <leader>3 :action GotoHarpoon3<cr>
+nmap <leader>4 :action GotoHarpoon4<cr>
+nmap <leader>5 :action GotoHarpoon5<cr>
+nmap <leader>6 :action GotoHarpoon6<cr>
 
