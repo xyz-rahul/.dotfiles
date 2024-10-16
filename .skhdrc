@@ -60,5 +60,14 @@ shift + cmd - space : \
     yabai -m window --toggle float; \
     yabai -m window --toggle border
 
+
+
+# ===== APPLICATION KEYBINDING ========================================
+lctrl + cmd - t : open -a "wezterm"
+lctrl + cmd - n : open -a "notes"
+lctrl + cmd - e : open -a "microsoft outlook"
+lctrl + cmd - b : open -a "microsoft edge"
+lctrl + cmd - v : open -a "visual studio code"
+lctrl + cmd - i : open -a "intellij idea ce"
 # ===== End of Keybindings ========================================
 
