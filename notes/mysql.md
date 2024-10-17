@@ -304,6 +304,19 @@ SELECT * FROM t1
 RIGHT JOIN t2 ON t1.id = t2.id
 ```
 
+
+---
+### Note on `NOT IN` and NULL Values
+
+If any of the values in the list are `NULL`, the whole expression will evaluate to `NULL`, resulting in no records being returned. 
+
+> **Source:** [Stack Overflow](https://stackoverflow.com/a/129151)
+
+**Key Point:**  
+`NOT IN` will return 0 records when compared against an unknown value. Since `NULL` is considered an unknown, a `NOT IN` query that includes `NULL` (or any `NULL` values in the list) will always return 0 records. This is because there is no way to be sure that the `NULL` value is not the value being tested.
+
+--- 
+
 ## ??
 
 custom var
@@ -312,3 +325,4 @@ ACID
 ```
 
 ```
+https://leetcode.com/discuss/interview-question/4546470/MySQL-Cheatsheet/
