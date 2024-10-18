@@ -59,6 +59,8 @@ return {
 				enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
 				-- Separator between context and content. Should be a single character string, like '-'.
 				-- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
+                max_lines = 3,
+                line_numbers = false,
 				separator = "─",
 			})
 

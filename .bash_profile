@@ -1,4 +1,4 @@
-eval "$(/opt/homebrew/bin/brew shellenv)"
+# eval "$(/opt/homebrew/bin/brew shellenv)"
 # Disable macOS message to change shell
 export BASH_SILENCE_DEPRECATION_WARNING=1
 export HOMEBREW_NO_AUTO_UPDATE=1
