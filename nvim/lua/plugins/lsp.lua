@@ -56,7 +56,7 @@ return {
 
 				formatting = lsp_zero.cmp_format({ details = true }),
 				mapping = cmp.mapping.preset.insert({
-					["<Enter>"] = cmp.mapping.confirm({ select = true }),
+					["<Enter>"] = cmp.mapping.confirm({ select = false }),
 					["<C-Space>"] = cmp.mapping.complete(),
 					["<C-u>"] = cmp.mapping.scroll_docs(-4),
 					["<C-d>"] = cmp.mapping.scroll_docs(4),
