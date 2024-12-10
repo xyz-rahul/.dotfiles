@@ -81,25 +81,37 @@ return {
                 callback = function(event)
                     local opts = { buffer = event.buf }
 
-                    vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
-                    vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
-                    vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
-                    vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
-                    vim.keymap.set('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
-                    vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
-                    vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
-                    vim.keymap.set('n', '<leader>r', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
-                    vim.keymap.set({ 'n', 'x' }, '=', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
-                    vim.keymap.set('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
-                    vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-                    vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
+                    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+                    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+                    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+                    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+                    vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+                    vim.keymap.set('n', 'go', vim.lsp.buf.type_definition, opts)
+                    vim.keymap.set('n', 'gs', vim.lsp.buf.signature_help, opts)
+                    vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, opts)
+                    vim.keymap.set({ 'n', 'x' }, '=', function()
+                        vim.lsp.buf.format({ async = true })
+                    end
+                    , opts)
+                    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+
+                    vim.keymap.set("n", "<leader>dt", function()
+                        vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+                    end, opts)
+                    vim.keymap.set("n", "<leader>dd", vim.diagnostic.open_float, opts)
+                    vim.keymap.set("n", "<space>dl", vim.diagnostic.setloclist, opts)
+                    vim.keymap.set("n", "[d", vim.diagnostic.goto_next, opts)
+                    vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, opts)
                 end,
             })
 
             vim.diagnostic.config({
-                -- update_in_insert = true,
+                underline = true,
+                signs = true,
+                virtual_text = false,
                 float = {
-                    focusable = false,
+                    focusable = true,
+                    show_header = true,
                     style = "minimal",
                     border = "rounded",
                     source = "always",
