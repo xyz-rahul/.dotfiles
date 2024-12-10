@@ -4,51 +4,20 @@ return {
         lazy = false,
         opts = {},
     },
-    -- Autocompletion
-    {
-        'hrsh7th/nvim-cmp',
-        dependencies = {
-            { "L3MON4D3/LuaSnip" },
-            { "saadparwaiz1/cmp_luasnip" },
-            { "rafamadriz/friendly-snippets" },
-        },
-        event = 'InsertEnter',
-        config = function()
-            local cmp = require('cmp')
-            require("luasnip.loaders.from_vscode").lazy_load()
-
-            -- to insert `(` after select function or method item
-            local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-            cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
-
-            cmp.setup({
-                sources = {
-                    { name = 'luasnip' }
-                },
-                mapping = cmp.mapping.preset.insert({
-                    ['<C-Space>'] = cmp.mapping.complete(),
-                    ['<C-u>'] = cmp.mapping.scroll_docs(-4),
-                    ['<C-d>'] = cmp.mapping.scroll_docs(4),
-                    ['<C-e>'] = cmp.mapping.abort(),
-                    ['<CR>'] = cmp.mapping.confirm({ select = true })
-                }),
-                snippet = {
-                    expand = function(args)
-                        require('luasnip').lsp_expand(args.body)
-                    end,
-                },
-            })
-        end
-    },
     -- LSP
     {
         'neovim/nvim-lspconfig',
         cmd = { 'LspInfo', 'LspInstall', 'LspStart' },
         event = { 'BufReadPre', 'BufNewFile' },
         dependencies = {
+            { 'williamboman/mason.nvim' },
             { 'hrsh7th/cmp-nvim-lsp' },
             { 'williamboman/mason.nvim' },
             { 'williamboman/mason-lspconfig.nvim' },
+            { 'hrsh7th/nvim-cmp' },
+            { "L3MON4D3/LuaSnip" },
+            { "saadparwaiz1/cmp_luasnip" },
+            { "rafamadriz/friendly-snippets" },
         },
         init = function()
             -- Reserve a space in the gutter
@@ -57,14 +26,53 @@ return {
         end,
         config = function()
             local lsp_defaults = require('lspconfig').util.default_config
-
-            -- Add cmp_nvim_lsp capabilities settings to lspconfig
-            -- This should be executed before you configure any language server
             lsp_defaults.capabilities = vim.tbl_deep_extend(
                 'force',
                 lsp_defaults.capabilities,
                 require('cmp_nvim_lsp').default_capabilities()
             )
+
+            require('mason-lspconfig').setup({
+                ensure_installed = {},
+                handlers = {
+                    -- this first function is the "default handler"
+                    -- it applies to every language server without a "custom handler"
+                    function(server_name)
+                        require('lspconfig')[server_name].setup({})
+                    end,
+                }
+            })
+
+            local cmp = require('cmp')
+            local cmp_select = { behavior = cmp.SelectBehavior.Select }
+            require("luasnip.loaders.from_vscode").lazy_load()
+
+            -- to insert `(` after select function or method item
+            local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+            cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+
+            cmp.setup({
+                snippet = {
+                    expand = function(args)
+                        require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+                    end,
+                },
+                mapping = cmp.mapping.preset.insert({
+                    ['<C-Space>'] = cmp.mapping.complete(),
+                    ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+                    ['<C-d>'] = cmp.mapping.scroll_docs(4),
+                    ['<C-e>'] = cmp.mapping.abort(),
+                    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+                    ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+                    ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+                }),
+                sources = cmp.config.sources({
+                    { name = 'nvim_lsp' },
+                    { name = 'luasnip' }, -- For luasnip users.
+                }, {
+                    { name = 'buffer' },
+                })
+            })
 
             -- LspAttach is where you enable features that only work
             -- if there is a language server active in the file
@@ -83,18 +91,21 @@ return {
                     vim.keymap.set('n', '<leader>r', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
                     vim.keymap.set({ 'n', 'x' }, '=', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
                     vim.keymap.set('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
+                    vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
+                    vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
                 end,
             })
 
-            require('mason-lspconfig').setup({
-                ensure_installed = {},
-                handlers = {
-                    -- this first function is the "default handler"
-                    -- it applies to every language server without a "custom handler"
-                    function(server_name)
-                        require('lspconfig')[server_name].setup({})
-                    end,
-                }
+            vim.diagnostic.config({
+                -- update_in_insert = true,
+                float = {
+                    focusable = false,
+                    style = "minimal",
+                    border = "rounded",
+                    source = "always",
+                    header = "",
+                    prefix = "",
+                },
             })
         end
     },
