@@ -7,8 +7,7 @@ return {
                 char = "\u{2502}"
             },
             scope = {
-                show_start = true,
-                show_end = true,
+                enabled = false,
             },
         })
         local hooks = require("ibl.hooks")
