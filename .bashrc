@@ -6,6 +6,7 @@ esac
 
 # ---------------------- start up code ---------------------
 eval "$(fzf --bash)"
+eval "$(direnv hook bash)"
 
 if command -v nvim &> /dev/null; then
     export EDITOR=nvim
