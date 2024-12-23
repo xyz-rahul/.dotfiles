@@ -18,5 +18,11 @@ return {
             "<cmd>lua require'fzf-lua'.live_grep()<cr>",
             { noremap = true, silent = true }
         )
+        vim.api.nvim_set_keymap(
+            "n",
+            "<leader>gg",
+            "<cmd> lua require'fzf-lua'.live_grep({ cmd = 'git grep --line-number --column --color=always' })<cr>",
+            { noremap = true, silent = true }
+        )
     end,
 }
