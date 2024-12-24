@@ -2,6 +2,7 @@
 cmd - 2 : open -a "wezterm"
 cmd - 3 : open -a "microsoft edge"
 cmd - 4 : open -a "visual studio code"
+cmd - 5 : open -a "postman"
 cmd - 7 : open -a "brave browser"
 cmd - 9 : open -a "microsoft outlook"
 cmd - 0 : open -a "notion"
