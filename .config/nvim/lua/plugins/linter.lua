@@ -6,13 +6,20 @@ return {
 
 		lint.linters_by_ft = {
 			javascript = { "eslint_d" },
-			javascript = { "eslint_d" },
 			typescript = { "eslint_d" },
 			javascriptreact = { "eslint_d" },
 			typescriptreact = { "eslint_d" },
 			svelte = { "eslint_d" },
 			python = { "pylint" },
 		}
+
+		lint.linters.eslint_d = require("lint.util").wrap(lint.linters.eslint_d, function(diagnostic)
+			-- ignore "No ESLint configuration found" error
+			if diagnostic.message:find("Error: Could not find config file") then
+				return nil
+			end
+			return diagnostic
+		end)
 
 		local ns = require("lint").get_namespace("my_linter_name")
 		vim.diagnostic.config({ virtual_text = true }, ns)
@@ -25,9 +32,5 @@ return {
 				lint.try_lint()
 			end,
 		})
-
-		vim.keymap.set("n", "<leader>lt", function()
-			lint.try_lint()
-		end, { desc = "Trigger linting for current file" })
 	end,
 }

@@ -6,7 +6,7 @@ local Wallpaper = require("wallpaper"):init(wallpapers_list)
 
 local config = wezterm.config_builder()
 
-config.background = Wallpaper:background()
+-- config.background = Wallpaper:background()
 
 ----------------- OPACITY ----------------
 local opacities = { 1, 0.75, 0.5, 0.25 }
