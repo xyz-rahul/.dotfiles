@@ -4,6 +4,8 @@ case $- in
 *) return ;;
 esac
 
+bind -x '"\C-f": "fzf.sh"'
+
 # ---------------------- start up code ---------------------
 eval "$(fzf --bash)"
 eval "$(direnv hook bash)"

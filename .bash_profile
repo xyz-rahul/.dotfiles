@@ -1,7 +1,10 @@
-eval "$(/opt/homebrew/bin/brew shellenv)"
-# Disable macOS message to change shell
-export BASH_SILENCE_DEPRECATION_WARNING=1
-export HOMEBREW_NO_AUTO_UPDATE=1
+# ~/.bash_profile
+if [[ "$(uname)" == "Darwin" ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+
+    export BASH_SILENCE_DEPRECATION_WARNING=1
+    export HOMEBREW_NO_AUTO_UPDATE=1
+fi
 
 script_dir="$HOME/.local/bin"
 export PATH="$PATH:$script_dir"
