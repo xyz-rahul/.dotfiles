@@ -33,9 +33,18 @@ return {
 			})
 		end,
 	},
+	-- autopairs
+	{
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		config = true,
+	},
 	{
 		"saghen/blink.cmp",
-		dependencies = "rafamadriz/friendly-snippets",
+		dependencies = {
+			"rafamadriz/friendly-snippets",
+			"giuxtaposition/blink-cmp-copilot",
+		},
 		version = "*",
 		opts = {
 			keymap = { preset = "default" },
@@ -43,18 +52,34 @@ return {
 				use_nvim_cmp_as_default = true,
 				nerd_font_variant = "mono",
 			},
+			-- Displays a preview of the selected item on the current line
+			signature = { enabled = true },
+			sources = {
+				default = { "lsp", "path", "snippets", "buffer", "copilot" },
+				providers = {
+					copilot = {
+						name = "copilot",
+						module = "blink-cmp-copilot",
+						async = true,
+					},
+				},
+			},
 			completion = {
+				accept = {},
 				documentation = {
 					auto_show = true,
-					auto_show_delay_ms = 200,
+					auto_show_delay_ms = 100,
 				},
 			},
 		},
 	},
-	-- autopairs
 	{
-		"windwp/nvim-autopairs",
-		event = "InsertEnter",
-		config = true,
+		"zbirenbaum/copilot.lua",
+		config = function()
+			require("copilot").setup({
+				suggestion = { enabled = false },
+				panel = { enabled = false },
+			})
+		end,
 	},
 }
