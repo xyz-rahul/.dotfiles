@@ -43,7 +43,7 @@ return {
 		"saghen/blink.cmp",
 		dependencies = {
 			"rafamadriz/friendly-snippets",
-			"giuxtaposition/blink-cmp-copilot",
+			-- "giuxtaposition/blink-cmp-copilot",
 		},
 		version = "*",
 		opts = {
@@ -55,13 +55,18 @@ return {
 			-- Displays a preview of the selected item on the current line
 			signature = { enabled = true },
 			sources = {
-				default = { "lsp", "path", "snippets", "buffer", "copilot" },
+				default = { "lsp", 
+                "path", 
+                "snippets", 
+                "buffer", 
+                -- "copilot" 
+            },
 				providers = {
-					copilot = {
-						name = "copilot",
-						module = "blink-cmp-copilot",
-						async = true,
-					},
+					-- copilot = {
+					-- 	name = "copilot",
+					-- 	module = "blink-cmp-copilot",
+					-- 	async = true,
+					-- },
 				},
 			},
 			completion = {
@@ -73,13 +78,13 @@ return {
 			},
 		},
 	},
-	{
-		"zbirenbaum/copilot.lua",
-		config = function()
-			require("copilot").setup({
-				suggestion = { enabled = false },
-				panel = { enabled = false },
-			})
-		end,
-	},
+	-- {
+	-- 	"zbirenbaum/copilot.lua",
+	-- 	config = function()
+	-- 		require("copilot").setup({
+	-- 			suggestion = { enabled = false },
+	-- 			panel = { enabled = false },
+	-- 		})
+	-- 	end,
+	-- },
 }

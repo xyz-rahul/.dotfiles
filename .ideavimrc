@@ -1,12 +1,21 @@
 source ~/.vimrc
 
+set surround
+
+" Remap 's' in normal mode to trigger AceJump
+nmap ss :action AceWordAction<CR>
+nmap S :action AceLineAction<CR>
+
+
 "enable nerdtree
 set NERDTree
 map <C-e> :NERDTreeToggle<CR>
+set matchpairs-={:}
 
 " Code formatting and navigation
 map <leader>fm :action ReformatCode<CR>
 map <leader>ff :action GotoFile<CR>
+map <leader>fc :action GotoClass<CR>
 map <leader>lg :action FindInPath<CR>
 
 
@@ -14,10 +23,10 @@ nmap <leader>ca :action Generate<CR>
 
 " Reference Search
 map gr :action FindUsages<CR>
-map gD :action GotoDeclaration<CR>
+map gd :action GotoDeclaration<CR>
 
 "QuickDefinition legacy stuff
-map gd :action QuickImplementations<CR>
+map gD :action QuickImplementations<CR>
 nnoremap gi :action GotoImplementation<CR>
 
 " set commentary

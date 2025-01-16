@@ -1,8 +1,12 @@
 hs = hs
 
 -- Application Launch Key Bindings
-hs.hotkey.bind({"cmd"}, "2", function()
+hs.hotkey.bind({"cmd"}, "1", function()
     hs.application.launchOrFocus("WezTerm")
+end)
+
+hs.hotkey.bind({"cmd"}, "2", function()
+    hs.application.launchOrFocus("intellij idea ce")
 end)
 
 hs.hotkey.bind({"cmd"}, "3", function()
@@ -10,23 +14,16 @@ hs.hotkey.bind({"cmd"}, "3", function()
 end)
 
 hs.hotkey.bind({"cmd"}, "4", function()
-    hs.application.launchOrFocus("Visual Studio Code")
-end)
-
-hs.hotkey.bind({"cmd"}, "5", function()
     hs.application.launchOrFocus("Postman")
 end)
 
-hs.hotkey.bind({ "cmd" }, "7", function()
-	hs.application.launchOrFocus("Brave Browser")
-end)
 
 hs.hotkey.bind({"cmd"}, "8", function()
     hs.osascript.applescript('tell application "Finder" to reopen activate')
 end)
 
 hs.hotkey.bind({"cmd"}, "9", function()
-    hs.application.launchOrFocus("Microsoft Outlook")
+    hs.application.launchOrFocus("slack")
 end)
 
 hs.hotkey.bind({"cmd"}, "0", function()
@@ -142,5 +139,19 @@ hs.hotkey.bind({"ctrl", "cmd"}, "space", function()
         os.execute(command)
     end
 end)
+
+local function sendSystemKey(key)     
+    hs.eventtap.event.newSystemKeyEvent(key, true):post()     
+    hs.eventtap.event.newSystemKeyEvent(key, false):post() 
+end
+
+hs.hotkey.bind({'ctrl', 'cmd'},'delete', function() sendSystemKey("MUTE") end)
+hs.hotkey.bind({'ctrl', 'cmd'}, '-',function() sendSystemKey("SOUND_DOWN") end)
+hs.hotkey.bind({'ctrl', 'cmd'}, '=', function() sendSystemKey("SOUND_UP") end)
+
+-- Brightness hotkeys
+hs.hotkey.bind({'ctrl', 'cmd'},"0", function() sendSystemKey("BRIGHTNESS_UP") end)
+hs.hotkey.bind({'ctrl', 'cmd'},"9", function() sendSystemKey("BRIGHTNESS_DOWN") end)
+
 
 hs.alert.show("Hammerspoon config loaded!")
