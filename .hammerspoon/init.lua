@@ -17,6 +17,9 @@ hs.hotkey.bind({"cmd"}, "4", function()
     hs.application.launchOrFocus("Postman")
 end)
 
+hs.hotkey.bind({"cmd"}, "5", function()
+    hs.application.launchOrFocus("mysqlworkbench")
+end)
 
 hs.hotkey.bind({"cmd"}, "8", function()
     hs.osascript.applescript('tell application "Finder" to reopen activate')

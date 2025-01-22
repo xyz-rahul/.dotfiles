@@ -30,7 +30,7 @@ map gD :action QuickImplementations<CR>
 nnoremap gi :action GotoImplementation<CR>
 
 " set commentary
-map gcc :action CommentByLineComment<CR>
+map gc :action CommentByLineComment<CR>
 map gbc :action CommentByBlockComment<CR>
 
 " View Problems
