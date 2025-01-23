@@ -1,3 +1,4 @@
+# ~/.bash_profile
 if [[ "$(uname)" == "Darwin" ]]; then
     export BASH_SILENCE_DEPRECATION_WARNING=1
     export HOMEBREW_NO_AUTO_UPDATE=1
