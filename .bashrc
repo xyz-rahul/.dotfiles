@@ -5,6 +5,8 @@ case $- in
 esac
 
 bind -x '"\C-f": "fzf.sh"'
+alias ww="fzf_idea_workspace_project_launcher.sh"
+
 
 # ---------------------- start up code ---------------------
 eval "$(fzf --bash)"
