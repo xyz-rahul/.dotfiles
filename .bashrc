@@ -8,7 +8,6 @@ bind -x '"\C-f": "fzf.sh"'
 
 # ---------------------- start up code ---------------------
 eval "$(fzf --bash)"
-eval "$(direnv hook bash)"
 
 if command -v nvim &> /dev/null; then
     export EDITOR=nvim
@@ -195,4 +194,66 @@ alias gSl='git stash list'
 
 alias gl="git log --graph --pretty=format:'%C(auto)%h%Creset - %C(auto)%d%Creset %C(auto)%s%Creset %C(bold green)(%cr)%Creset %C(italic 244)<%an>%Creset' --abbrev-commit "
 alias gla="git log --graph --pretty=format:'%C(auto)%h%Creset - %C(auto)%d%Creset %C(auto)%s%Creset %C(bold green)(%cr)%Creset %C(italic 244)<%an>%Creset' --abbrev-commit --all"
+
+
+
+gclone() {
+    # Define color variables at the start
+    RED='\033[1;31m'
+    GREEN='\033[1;32m'
+    YELLOW='\033[1;33m'
+    BLUE='\033[1;34m'
+    NC='\033[0m'  # No Color
+
+    if [ -z "$1" ]; then
+        echo -e "\n${RED}Error:${NC} Missing argument."
+        echo -e "${YELLOW}Usage:${NC} ggc <github-repo-url>\n"
+        return 1
+    fi
+
+    local origin="$1"
+    local new_owner="reglobe"  # New owner for the upstream repository
+
+    # Validate URL format (supports both HTTPS and SSH formats)
+    if [[ ! "$origin" =~ ^(https:\/\/github\.com\/|git@github\.com:)[^/]+\/[^/]+(\.git)?$ ]]; then
+        echo -e "\n${RED}Error:${NC} Invalid GitHub repository URL."
+        echo -e "${YELLOW}Expected formats:${NC}"
+        echo -e "  - HTTPS: https://github.com/user/repo.git"
+        echo -e "  - SSH:   git@github.com:user/repo.git\n"
+        return 1
+    fi
+
+    # Extract the repo name and owner from HTTPS or SSH URLs
+    local repo_name=$(basename -s .git "$origin")
+    local owner=$(echo "$origin" | sed -E 's#.*github.com[:/]([^/]+)/.*#\1#')
+
+    # Replace the owner with the new owner
+    local upstream="${origin/$owner/$new_owner}"
+
+    # Check if the user has access to the repository
+    echo -e "\n${BLUE}Checking access to the repository...${NC}"
+    if git ls-remote "$origin" &>/dev/null; then
+        echo -e "${GREEN}Access verified!${NC}"
+    else
+        echo -e "${RED}Error:${NC} Cannot access the repository. Check if it's private or if you have the correct permissions.\n"
+        return 1
+    fi
+
+    # Clone the repository
+    echo -e "\n${BLUE}Cloning repository:${NC} $origin\n"
+    git clone "$origin"
+
+    # Navigate into the repo directory
+    if cd "$repo_name"; then
+        echo -e "\n${BLUE}Setting upstream remote:${NC} $upstream\n"
+        git remote add upstream "$upstream"
+
+        echo -e "\n${GREEN}Remotes configured successfully:${NC}\n"
+        git remote -v
+        echo "" # Extra line break at the end for better separation
+    else
+        echo -e "\n${RED}Error:${NC} Failed to enter directory $repo_name\n"
+        return 1
+    fi
+}
 
