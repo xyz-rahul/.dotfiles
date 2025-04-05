@@ -13,7 +13,8 @@ SELECTED_DIR=$(find "$WORKSPACE_DIR" -mindepth 1 -maxdepth 1 -type d | sed "s|.*
 if [ -n "$SELECTED_DIR" ]; then
     FULL_PATH="$WORKSPACE_DIR/$SELECTED_DIR"
     echo "Opening in IntelliJ IDEA: $FULL_PATH"
-    idea "$FULL_PATH"
+    cd "$FULL_PATH" && $SHELL
+    # idea "$FULL_PATH"
 else
     echo "No directory selected."
 fi

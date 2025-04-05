@@ -1,11 +1,26 @@
 #!bash
+
+# Exit if the shell is not interactive (i.e., skip for scripts or non-login shells)
 case $- in
 *i*) ;; # interactive
 *) return ;;
 esac
 
+# ---------------------- local utility functions ---------------------
+
+_have() { type "$1" &>/dev/null; }
+_source_if() { [[ -r "$1" ]] && source "$1"; }
+
+_tmux() {
+  if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+      exec $(tmux a || tmux)
+  fi
+}
+
+# custom hotkeys
+bind -x '"\C-b":"_tmux"'
+
 bind -x '"\C-f": "fzf.sh"'
-alias ww="fzf_idea_workspace_project_launcher.sh"
 
 
 # ---------------------- start up code ---------------------
@@ -40,19 +55,6 @@ elif [[ "$UNAME" == CYGWIN* || "$UNAME" == MINGW* ]] ; then
     export paste='powershell Get-Clipboard'
 fi
 
-# ---------------------- local utility functions ---------------------
-
-_have() { type "$1" &>/dev/null; }
-_source_if() { [[ -r "$1" ]] && source "$1"; }
-
-_tmux() {
-  if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-      exec $(tmux a || tmux)
-  fi
-}
-
-# custom hotkeys
-bind -x '"\C-b":"_tmux"'
 
 # ------------------------------ history -----------------------------
 
@@ -68,10 +70,16 @@ shopt -s checkwinsize
 shopt -s cmdhist
 
 # Show auto-completion list automatically, without double tab
-if [[ $iatest > 0 ]]; then bind "set show-all-if-ambiguous On"; fi
+if [[ $iatest -gt 0 ]]; then bind "set show-all-if-ambiguous On"; fi
+
 
 # Causes bash to append to history instead of overwriting it so if you start a new terminal, you have old session history
 shopt -s histappend 
+
+# Ensure history is appended immediately and shared
+export PROMPT_COMMAND='history -a; history -n'
+
+
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -87,7 +95,7 @@ export FZF_CTRL_R_OPTS="
                       --header 'Press CTRL-Y to copy command into clipboard'"
 
 # ------------------------------ cdpath ------------------------------
-export CDPATH=".:$HOME"
+# export CDPATH=".:$HOME"
 
 # ------------------------ bash shell options ------------------------
 # shopt is for BASHOPTS, set is for SHELLOPTS
@@ -117,13 +125,13 @@ git_prompt ()
 PS1="\[\033[38;5;35m\][\u\[\033[38;5;35m\]] [\[\033[38;5;33m\]\j\[\033[38;5;35m\]] [\h:\[$(tput sgr0)\]\[\033[38;5;33m\]\w\[\033[38;5;35m\]]\[$(tput setaf 3)\]\$(git_prompt) \n\\[\033[38;5;35m\]$ \[$(tput sgr0)\]"
 
 # ----------------------------- dircolors ----------------------------
-if _have dircolors; then
-	if [[ -r "$HOME/.dircolors" ]]; then
-		eval "$(dircolors -b "$HOME/.dircolors")"
-	else
-		eval "$(dircolors -b)"
-	fi
-fi
+# if _have dircolors; then
+# 	if [[ -r "$HOME/.dircolors" ]]; then
+# 		eval "$(dircolors -b "$HOME/.dircolors")"
+# 	else
+# 		eval "$(dircolors -b)"
+# 	fi
+# fi
 
 export CLICOLOR=1 # colorful ls
 
@@ -138,12 +146,9 @@ export LESS_TERMCAP_ue=""      # "0m"
 export LESS_TERMCAP_us="[4m"  # underline
 
 # -------------------- git alias -------------------
-alias g='git '
 
 alias ga='git add --verbose'
-alias gaa='git add --all --verbose'
 alias gap='git add --patch --verbose'
-alias gaap='git add --all --patch --verbose'
 alias gau='git add --update'
 
 alias gd='git diff'
@@ -151,48 +156,20 @@ alias gds='git diff --staged'
 
 alias gs='git status'
 alias gss='git status --short'
-alias gsb='git status  --branch'
-alias gssb='git status --short --branch'
 
-alias gsw='git switch'
 
 alias gc='git commit'
-alias gca='git commit --amend'
 
-alias gr='git rebase --interactive'
-alias grc='git rebase --continue'
-alias gra='git rebase --abort'
-alias grs='git rebase --skip'
+alias gr='git restore'
+alias grs='git restore --staged'
 
-alias gR='git restore'
-alias gRs='git restore --staged'
-
-alias gb='git branch'
-alias gba='git branch --all'
-alias gbd='git branch --delete'
-alias gbm='git branch --merged'
-alias gbnm='git branch --no-merged'
-
-alias gf='git fetch'
+alias gf='git fetch --all'
 alias gfo='git fetch origin'
 alias gfu='git fetch upstream'
 
 alias gp='git push'
 alias gpo='git push origin'
 
-alias gm='git merge'
-alias gma='git merge --abort'
-alias gmc='git merge --continue'
-alias gms='git merge --squash'
-
-alias gSs='git stash save'
-alias gSp='git stash push'
-alias gSpa='git stash push --all'
-alias gSP='git stash pop'
-alias gSa='git stash apply'
-alias gSd='git stash drop'
-alias gSc='git stash clear'
-alias gSl='git stash list'
 
 alias gl="git log --graph --pretty=format:'%C(auto)%h%Creset - %C(auto)%d%Creset %C(auto)%s%Creset %C(bold green)(%cr)%Creset %C(italic 244)<%an>%Creset' --abbrev-commit "
 alias gla="git log --graph --pretty=format:'%C(auto)%h%Creset - %C(auto)%d%Creset %C(auto)%s%Creset %C(bold green)(%cr)%Creset %C(italic 244)<%an>%Creset' --abbrev-commit --all"
@@ -257,5 +234,18 @@ gclone() {
         echo -e "\n${RED}Error:${NC} Failed to enter directory $repo_name\n"
         return 1
     fi
+}
+
+ww() {
+    local dir
+    dir=$(find ~/dev/workspace -maxdepth 1 -type d | sed 's|.*/||' | fzf) 
+
+    if [[ -z "$dir" ]]; then
+        echo "Error: No directory selected." >&2
+        return 1
+    fi
+
+    cd ~/dev/workspace/"$dir" || { echo "Error: Failed to change directory to $dir" >&2; return 1; }
+    idea ~/dev/workspace/"$dir"  # Open in IntelliJ without running in the background
 }
 
