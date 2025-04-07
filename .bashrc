@@ -5,7 +5,6 @@ case $- in
 *i*) ;; # interactive
 *) return ;;
 esac
-
 # ---------------------- local utility functions ---------------------
 
 _have() { type "$1" &>/dev/null; }
@@ -61,6 +60,9 @@ shopt -s extglob          # Extended pattern matching in filename expansion
 shopt -s cmdhist          # save multiline cmd as one
 shopt -s histappend       # append to history file
 
+# ------------------------------ cdpath ------------------------------
+export CDPATH=".:$HOME"
+
 # ---------------------------- History Settings ----------------------------
 
 export HISTCONTROL=ignorespace:erasedups     # ignore space, remove dups
@@ -104,7 +106,7 @@ export FZF_CTRL_T_OPTS="
                     --walker-skip .git,node_modules,target
                     --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 
-export FZF_COMPLETION_TRIGGER=''
+export FZF_COMPLETION_TRIGGER='**'
 export FZF_COMPLETION_DIR_OPTS='--walker dir,follow'
 
 _fzf_comprun() {
@@ -114,7 +116,7 @@ _fzf_comprun() {
   case "$command" in
     export|unset) fzf --preview "eval 'echo \$'{}"         "$@" ;;
     ssh)          fzf --preview 'dig {}'                   "$@" ;;
-    *)            fzf  "$@" ;;
+    *)            fzf --preview 'cat -n {}'                "$@" ;;
   esac
 }
 
@@ -139,6 +141,9 @@ PS1="\[\033[38;5;35m\][\u\[\033[38;5;35m\]] [\[\033[38;5;33m\]\j\[\033[38;5;35m\
 
 
 # -------------------- GIT -------------------
+# Enable Git completion if available
+[ -f "$HOME/git-completion.bash" ] && source "$HOME/git-completion.bash" || printf "not found git-completion.bash\n"
+
 
 alias ga='git add --verbose'
 alias gap='git add --patch --verbose'
