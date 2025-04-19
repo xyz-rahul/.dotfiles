@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Define color variables for output
+RED='\033[1;31m'
+GREEN='\033[1;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[1;34m'
+NC='\033[0m'  # No Color
+
+# Get the repository URL from the first argument
+origin="$1"
+new_owner="reglobe"  # New owner for the upstream repository
+
+# Check if the origin URL is provided
+if [ -z "$origin" ]; then
+    echo -e "\n${RED}Error:${NC} Missing argument. Usage: $0 <github-repo-url>"
+    exit 1
+fi
+
+# Extract repo name and owner from URL
+repo_name=$(basename -s .git "$origin")
+owner=$(echo "$origin" | sed -E 's#.*github.com[:/]([^/]+)/.*#\1#')
+
+# Construct upstream URL by replacing the owner
+upstream="${origin/$owner/$new_owner}"
+
+# Clone the repository
+git clone "$origin" || { echo -e "${RED}Error:${NC} Failed to clone repository."; exit 1; }
+
+# Navigate into the cloned repo
+builtin cd "$repo_name" || { echo -e "${RED}Error:${NC} Failed to enter directory $repo_name. Exiting."; exit 1; }
+
+# Set the upstream remote
+echo -e "\n${BLUE}Setting upstream remote:${NC} $upstream"
+git remote add upstream "$upstream" || { echo -e "${RED}Error:${NC} Failed to set upstream remote."; exit 1; }
+
+# Show remotes
+echo -e "\n${GREEN}Remotes configured successfully:${NC}"
+git remote -v
+
+# Print the cd command to the user
+echo -e "\n${YELLOW}You can change to the repository directory with this command:${NC}"
+echo -e "cd $(pwd)"
