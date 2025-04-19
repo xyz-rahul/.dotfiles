@@ -25,8 +25,6 @@ _tmux() {
 bind -x '"\C-b":"_tmux"'
 bind -x '"\C-f":"fzf.sh"'
 
-
-
 # ---------------------- start up code ---------------------
 
 if command -v nvim &> /dev/null; then
