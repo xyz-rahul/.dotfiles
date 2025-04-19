@@ -45,28 +45,4 @@ map [d :action GotoPreviousError<CR>
 
 " Fold
 :set foldenable
-" map zc :action CollapseRegion<CR>
-" nnoremap zC :action CollapseRegionRecursively<CR>
-" Unfold
-" map zo :action ExpandRegion<CR>
-" nnoremap zO :action ExpandRegionRecursively<CR>
-
-
-" Terminal
-" nmap <leader>t :action ActivateTerminalToolWindow<CR>
-
-" Git
-" nmap <leader>gB :action Git.Branches<CR>
-" nmap <leader>G :action Git.Menu<CR>
-"
-" nmap <leader>h :action ShowHarpoon<CR>
-" nmap <leader>a :action AddToHarpoon<CR>
-"
-"
-" nmap <leader>1 :action GotoHarpoon1<cr>
-" nmap <leader>2 :action GotoHarpoon2<cr>
-" nmap <leader>3 :action GotoHarpoon3<cr>
-" nmap <leader>4 :action GotoHarpoon4<cr>
-" nmap <leader>5 :action GotoHarpoon5<cr>
-" nmap <leader>6 :action GotoHarpoon6<cr>
 

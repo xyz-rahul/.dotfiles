@@ -13,14 +13,7 @@ if [ -f "$HOME/.bashrc" ]; then
         . "$HOME/.bashrc"
 fi
 
-
-# [[ -r "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]] && source "$(brew --prefix)/etc/profile.d/bash_completion.sh"
-
-# [ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
-
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
+export PATH="$PATH:/usr/local/anaconda3/bin"

@@ -20,7 +20,10 @@ _tmux() {
 bind -x '"\C-b":"_tmux"'
 
 
+
 # ---------------------- start up code ---------------------
+# bash_completion
+[[ -r "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]] && . "$(brew --prefix)/etc/profile.d/bash_completion.sh"
 
 if command -v nvim &> /dev/null; then
     export EDITOR=nvim
@@ -116,7 +119,7 @@ _fzf_comprun() {
   case "$command" in
     export|unset) fzf --preview "eval 'echo \$'{}"         "$@" ;;
     ssh)          fzf --preview 'dig {}'                   "$@" ;;
-    *)            fzf --preview 'cat -n {}'                "$@" ;;
+    *)            fzf "$@" ;;
   esac
 }
 
