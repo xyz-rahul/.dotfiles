@@ -45,9 +45,11 @@ return {
 			"rafamadriz/friendly-snippets",
 			-- "giuxtaposition/blink-cmp-copilot",
 		},
-		version = "*",
+        version = '1.*',
 		opts = {
-			keymap = { preset = "default" },
+			keymap = { preset = "default",
+            ['<CR>'] = { 'accept', 'fallback' }
+            },
 			appearance = {
 				use_nvim_cmp_as_default = true,
 				nerd_font_variant = "mono",
@@ -75,6 +77,12 @@ return {
 					auto_show = true,
 					auto_show_delay_ms = 100,
 				},
+                list = {
+                     selection = { 
+                          preselect = true,
+                          auto_insert = true,
+                     }
+                }
 			},
 		},
 	},
