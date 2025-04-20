@@ -18,7 +18,15 @@ hs.hotkey.bind({"cmd"}, "4", function()
 end)
 
 hs.hotkey.bind({"cmd"}, "5", function()
-    hs.application.launchOrFocus("mysqlworkbench")
+    hs.application.launchOrFocus("dbeaver")
+end)
+
+-- hs.hotkey.bind({"cmd"}, "5", function()
+--     hs.application.launchOrFocus("dbeaver")
+-- end)
+
+hs.hotkey.bind({"cmd"}, "7", function()
+    hs.application.launchOrFocus("visual studio code")
 end)
 
 hs.hotkey.bind({"cmd"}, "8", function()

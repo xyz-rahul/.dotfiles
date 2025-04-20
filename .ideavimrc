@@ -2,10 +2,8 @@ source ~/.vimrc
 
 set surround
 
-" Remap 's' in normal mode to trigger AceJump
-nmap ss :action AceWordAction<CR>
-nmap S :action AceLineAction<CR>
-
+" install KJump
+nmap ss :action KJumpAction.Word0<CR>
 
 "enable nerdtree
 set NERDTree
@@ -31,7 +29,7 @@ nnoremap gi :action GotoImplementation<CR>
 
 " set commentary
 map gc :action CommentByLineComment<CR>
-map gbc :action CommentByBlockComment<CR>
+map gb :action CommentByBlockComment<CR>
 
 " View Problems
 map <leader>dd :action ShowErrorsInProject<CR>
@@ -46,28 +44,29 @@ map ]d :action GotoNextError<CR>
 map [d :action GotoPreviousError<CR>
 
 " Fold
-map zc :action CollapseRegion<CR>
-nnoremap zC :action CollapseRegionRecursively<CR>
+:set foldenable
+" map zc :action CollapseRegion<CR>
+" nnoremap zC :action CollapseRegionRecursively<CR>
 " Unfold
-map zo :action ExpandRegion<CR>
-nnoremap zO :action ExpandRegionRecursively<CR>
+" map zo :action ExpandRegion<CR>
+" nnoremap zO :action ExpandRegionRecursively<CR>
 
 
 " Terminal
-nmap <leader>t :action ActivateTerminalToolWindow<CR>
+" nmap <leader>t :action ActivateTerminalToolWindow<CR>
 
 " Git
-nmap <leader>gB :action Git.Branches<CR>
-nmap <leader>G :action Git.Menu<CR>
-
-nmap <leader>h :action ShowHarpoon<CR>
-nmap <leader>a :action AddToHarpoon<CR>
-
-
-nmap <leader>1 :action GotoHarpoon1<cr>
-nmap <leader>2 :action GotoHarpoon2<cr>
-nmap <leader>3 :action GotoHarpoon3<cr>
-nmap <leader>4 :action GotoHarpoon4<cr>
-nmap <leader>5 :action GotoHarpoon5<cr>
-nmap <leader>6 :action GotoHarpoon6<cr>
+" nmap <leader>gB :action Git.Branches<CR>
+" nmap <leader>G :action Git.Menu<CR>
+"
+" nmap <leader>h :action ShowHarpoon<CR>
+" nmap <leader>a :action AddToHarpoon<CR>
+"
+"
+" nmap <leader>1 :action GotoHarpoon1<cr>
+" nmap <leader>2 :action GotoHarpoon2<cr>
+" nmap <leader>3 :action GotoHarpoon3<cr>
+" nmap <leader>4 :action GotoHarpoon4<cr>
+" nmap <leader>5 :action GotoHarpoon5<cr>
+" nmap <leader>6 :action GotoHarpoon6<cr>
 
