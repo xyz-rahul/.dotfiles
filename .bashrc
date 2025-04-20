@@ -79,8 +79,8 @@ set colored-stats on                # Provides colorful statistics for completio
 shopt -s histappend # Append to the history file, don't overwrite it
 shopt -s cmdhist # Save multi-line commands as one command
 
-export HISTCONTROL=ignorespace:erasedups     # ignore space, remove dups
-export HISTSIZE=500                          # history size in memory
+export HISTCONTROL=erasedups     # ignore space, remove dups
+export HISTSIZE=1000                          # history size in memory
 export HISTFILESIZE=10000                    # history file size
 export HISTIGNORE="ls*:ll:exit:clear:cd*:top:htop*:history*:rm*"  # ignore these cmds
 export PROMPT_COMMAND='history -a; history -n'
@@ -104,84 +104,6 @@ export LESS_TERMCAP_us="[4m"  # underline
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'  # notify on long cmd
 
 alias logs="sudo find /var/log -type f -exec file {} \; | grep 'text' | cut -d' ' -f1 | sed -e's/:$//g' | grep -v '[0-9]$' | xargs tail -f"  # tail all log files
-
-
-# ---------------------------- FZF ----------------------------
-
-eval "$(fzf --bash)"
-
-export FZF_CTRL_R_OPTS="
-                      --preview 'echo {}' --preview-window up:3:hidden:wrap
-                      --bind 'ctrl-y:execute-silent(echo -n {2..} | $copy)'
-                      --header 'Press CTRL-Y to copy command into clipboard'"
-
-export FZF_CTRL_T_OPTS="
-                    --walker-skip .git,node_modules,target
-                    --bind 'ctrl-/:change-preview-window(down|hidden|)'"
-
-export FZF_COMPLETION_TRIGGER='**'
-export FZF_COMPLETION_DIR_OPTS='--walker dir,follow'
-
-_fzf_comprun() {
-  local command=$1
-  shift
-
-  case "$command" in
-    export|unset) fzf --preview "eval 'echo \$'{}"         "$@" ;;
-    ssh)          fzf --preview 'dig {}'                   "$@" ;;
-    *)            fzf "$@" ;;
-  esac
-}
-
-# --------------------------- smart prompt ---------------------------
-git_prompt ()
-{
-  # Is this a git directory?
-  if ! git rev-parse --git-dir > /dev/null 2>&1; then
-    return 0
-  fi
-  # Grab working branch name
-  git_branch=$(git branch 2>/dev/null| sed -n '/^\*/s/^\* //p')
-  # Clean or dirty branch
-  if git diff --quiet 2>/dev/null >&2; then
-    git_color="${git_clean_color}"
-  else
-    git_color="${git_dirty_color}"
-  fi
-  echo " [$git_color$git_branch${reset_color}]"
-}
-# PS1="\[\033[38;5;35m\][\u\[\033[38;5;35m\]] [\[\033[38;5;33m\]\j\[\033[38;5;35m\]] [\h:\[$(tput sgr0)\]\[\033[38;5;33m\]\w\[\033[38;5;35m\]]\[$(tput setaf 3)\]\$(git_prompt) \n\\[\033[38;5;35m\]$ \[$(tput sgr0)\]"
-# curl -o git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
-_curl_github_page_download() {
-  local github_url="$1"
-  local output_file="$2"
-
-  if [[ -z "$github_url" ]]; then
-    echo "Usage: _curl_github_page_download <github_blob_url> [output_file]"
-    return 1
-  fi
-
-  # Extract the raw URL
-  local raw_url
-  raw_url=$(echo "$github_url" | sed -E 's#https://github.com/([^/]+)/([^/]+)/blob/([^/]+)/(.*)#https://raw.githubusercontent.com/\1/\2/\3/\4#')
-
-  # If no output_file is given, extract filename from URL path
-  if [[ -z "$output_file" ]]; then
-    output_file=$(basename "$raw_url")
-  fi
-
-  if curl -fsSL "$raw_url" -o "$output_file"; then
-    # Return the absolute file path
-    printf "%s\n" "$(realpath "$output_file")"
-  else
-    echo "Download failed."
-    return 1
-  fi
-}
-
-
-source prompt_setup.sh
-
 
 # -------------------- GIT -------------------
 
@@ -219,3 +141,8 @@ ww() {
     idea ~/dev/workspace/"$dir"  # Open in IntelliJ without running in the background
 }
 
+# --------------------------- smart prompt ---------------------------
+source prompt_setup.sh # source PS1 
+
+# ---------------------------- FZF ----------------------------
+source "$HOME/.dotfiles/scripts/fzf_custom_completions.sh"
