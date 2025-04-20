@@ -150,7 +150,37 @@ git_prompt ()
   fi
   echo " [$git_color$git_branch${reset_color}]"
 }
-PS1="\[\033[38;5;35m\][\u\[\033[38;5;35m\]] [\[\033[38;5;33m\]\j\[\033[38;5;35m\]] [\h:\[$(tput sgr0)\]\[\033[38;5;33m\]\w\[\033[38;5;35m\]]\[$(tput setaf 3)\]\$(git_prompt) \n\\[\033[38;5;35m\]$ \[$(tput sgr0)\]"
+# PS1="\[\033[38;5;35m\][\u\[\033[38;5;35m\]] [\[\033[38;5;33m\]\j\[\033[38;5;35m\]] [\h:\[$(tput sgr0)\]\[\033[38;5;33m\]\w\[\033[38;5;35m\]]\[$(tput setaf 3)\]\$(git_prompt) \n\\[\033[38;5;35m\]$ \[$(tput sgr0)\]"
+# curl -o git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+_curl_github_page_download() {
+  local github_url="$1"
+  local output_file="$2"
+
+  if [[ -z "$github_url" ]]; then
+    echo "Usage: _curl_github_page_download <github_blob_url> [output_file]"
+    return 1
+  fi
+
+  # Extract the raw URL
+  local raw_url
+  raw_url=$(echo "$github_url" | sed -E 's#https://github.com/([^/]+)/([^/]+)/blob/([^/]+)/(.*)#https://raw.githubusercontent.com/\1/\2/\3/\4#')
+
+  # If no output_file is given, extract filename from URL path
+  if [[ -z "$output_file" ]]; then
+    output_file=$(basename "$raw_url")
+  fi
+
+  if curl -fsSL "$raw_url" -o "$output_file"; then
+    # Return the absolute file path
+    printf "%s\n" "$(realpath "$output_file")"
+  else
+    echo "Download failed."
+    return 1
+  fi
+}
+
+
+source prompt_setup.sh
 
 
 # -------------------- GIT -------------------

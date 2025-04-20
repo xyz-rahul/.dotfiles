@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Check if a GitHub URL is provided
+if [[ -z "$1" ]]; then
+  echo "Error: No GitHub URL provided."
+  echo "Usage: $0 <github_blob_url> [output_file]"
+  exit 1
+fi
+
+# Get the GitHub URL and optional output file name
+github_url="$1"
+output_file="$2"
+
+# Convert the GitHub blob URL to the raw content URL
+raw_url=$(echo "$github_url" | sed -E 's#https://github.com/([^/]+)/([^/]+)/blob/([^/]+)/(.*)#https://raw.githubusercontent.com/\1/\2/\3/\4#')
+
+# If no output file is provided, extract the filename from the URL
+if [[ -z "$output_file" ]]; then
+  output_file=$(basename "$raw_url")
+fi
+
+# If the output file is a directory path, append the filename to the path
+if [[ -d "$output_file" ]]; then
+  output_file="$output_file/$(basename "$raw_url")"
+fi
+
+# Download the file using curl
+if curl -fsSL "$raw_url" -o "$output_file"; then
+  # Print the absolute file path of the downloaded file
+  printf "%s\n" "$(realpath "$output_file")"
+else
+  echo "Download failed."
+  exit 1
+fi
+
