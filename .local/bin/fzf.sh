@@ -1,30 +1,28 @@
 #!/bin/bash
-if command -v bat &>/dev/null; then
-    viewer="bat -n --color=always"
-elif command -v cat &>/dev/null; then
-    viewer="cat -n"
-else
-    echo "Error: Neither 'bat' nor 'cat' is available on this system."
-    exit 1
-fi
+DIRS=( "$HOME/dev" "$HOME/.dotfiles" )
 
-# Directories to search
-DIRS=("$HOME/dev" "$HOME/.dotfiles")
+# Define fd commands
+fd_files='fd . ${DIRS[@]} --type f --hidden --follow --ignore-case --no-ignore --exclude .git && fd . $HOME -d 1 --type f --hidden --ignore-case'
+fd_dirs='fd . ${DIRS[@]} --type d --hidden --follow --ignore-case --no-ignore --exclude .git  && fd . $HOME -d 1 --type d --hidden --ignore-case'
 
+# Build bind args for toggle
+bind_args="ctrl-d:reload(eval $fd_dirs),ctrl-f:reload(eval $fd_files)"
+
+# Run fzf with toggle, clipboard copy, styling, and skipping directories
 SELECTED_FILE=$(
-    {
-        fd . "${DIRS[@]}" --type f --hidden --follow --ignore-case --no-ignore &
-        fd . "$HOME" -d 1 --type f --hidden --ignore-case
-    } |
-        fzf --ansi --layout=reverse --preview-window up --preview "$viewer {}" --bind ctrl-u:preview-up,ctrl-d:preview-down
+    eval "$fd_files" | fzf \
+    --bind="$bind_args" \
+    --bind="ctrl-y:execute-silent(echo -n {2..} | pbcopy)" \
+    --header="Press CTRL-Y to copy command into clipboard | Ctrl‑D → dirs | Ctrl‑F → files"
 )
 
 # If no file is selected, exit gracefully
 if [ -z "$SELECTED_FILE" ]; then
     exit 0
+elif [ -d "$SELECTED_FILE" ]; then
+    cd "$SELECTED_FILE" && echo "pwd: $(pwd)"
 else
     # Extract directory path from the selected file
     dir=$(dirname "$SELECTED_FILE")
-
-    cd "$dir" && $EDITOR "$SELECTED_FILE"
+    builtin cd "$dir" && ${EDITOR:-vim} "$SELECTED_FILE"
 fi
