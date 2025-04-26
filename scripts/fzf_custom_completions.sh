@@ -7,7 +7,7 @@ fi
 
 eval "$(fzf --bash)"
 
-export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --ansi"
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --ansi --bind ctrl-u:page-up,ctrl-d:page-down"
 
 export FZF_CTRL_R_OPTS="
                       --preview 'echo {}' --preview-window up:3:hidden:wrap
